@@ -111,12 +111,6 @@ public class ServerClient extends AsyncTask<Void, Integer, Integer> {
 
     }
 
-    public int byteArrayToInt(byte bytes[]) {
-        ByteBuffer buff = ByteBuffer.allocate(4);
-        buff.order(ByteOrder.LITTLE_ENDIAN).put(bytes).flip();
-        return buff.getInt();
-    }
-
     private void findImage(String source, ArrayList<File> sendArray) throws IOException{
         File dir = new File(source);
         File[] fileList = dir.listFiles();
