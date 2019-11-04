@@ -86,7 +86,7 @@ public class ServerClient extends AsyncTask<Void, Integer, Integer> {
                 for(int i = 0; i < len && i < 20; i++) {
                     InetSocketAddress socketAddress = new InetSocketAddress(server, 5678);
                     Socket fileSocket = new Socket();
-                    fileSocket.connect(socketAddress, 10);
+                    fileSocket.connect(socketAddress, 3000);
                     BufferedOutputStream bos = new BufferedOutputStream(fileSocket.getOutputStream());
 
                     File file = sendArray.get(i);
