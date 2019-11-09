@@ -2,6 +2,7 @@ package com.kdh.test;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -12,6 +13,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+
+import com.chobocho.tetrisgame.ChoboTetrisActivity;
 
 public class MainActivity extends AppCompatActivity {
     TextView txtResult;
@@ -53,16 +56,8 @@ public class MainActivity extends AppCompatActivity {
     public void onClink(View v){
         switch (v.getId()){
             case R.id.btn1:
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        String data = input.getText().toString();
-//                        Log.w("NETWORK", " " + data);
-//                        if (data != null){
-//                            out.println(data); // data를 stream 형태로 변환하여 전송. 변환 내용은 쓰레드에 담겨있음
-//                        }
-//                    }
-//                }).start();
+                Intent intent = new Intent(this, ChoboTetrisActivity.class);
+                startActivity(intent);
                 break;
             case R.id.btn2:
                 ServerClient msc = new ServerClient(this);
