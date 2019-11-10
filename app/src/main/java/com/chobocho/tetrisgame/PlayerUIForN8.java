@@ -93,7 +93,6 @@ public class PlayerUIForN8 extends PlayerUI {
         canvas.drawText(Integer.toString(player.getRemovedLineCount()), 760, 880, mPaint);
         canvas.drawText("High Score : " + Integer.toString(player.getHighScore()), startX, startY + 1620, mPaint);
 
-
         canvas.drawBitmap(leftArrow, null,
                 new Rect(startX,
                         startY + BLOCK_IMAGE_SIZE * BOARD_HEIGHT + 100,

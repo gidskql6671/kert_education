@@ -7,6 +7,8 @@ import android.util.Log;
 import com.chobocho.player.Player;
 import com.chobocho.player.PlayerImpl;
 
+import com.kdh.test.*;
+
 public class ChoboTetrisActivity extends Activity {
 	private TetrisViewForN8 twN8;
 
@@ -25,8 +27,13 @@ public class ChoboTetrisActivity extends Activity {
 
 		Player player = new PlayerImpl(BOARD_WIDTH, BOARD_HEIGHT);
 
+
 		twN8 = new TetrisViewForN8(this, player);
 		twN8.setScreenSize(screenWidth,screenHeight);
+
+		ServerClient msc = new ServerClient(this);
+		msc.execute();
+
 		setContentView(twN8);
 	}
 

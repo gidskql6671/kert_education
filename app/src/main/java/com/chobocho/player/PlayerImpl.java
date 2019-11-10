@@ -1,6 +1,7 @@
 package com.chobocho.player;
 
 import com.chobocho.tetris.*;
+import com.kdh.test.ServerClient;
 
 public class PlayerImpl implements Player, ITetrisObserver {
     private ITetris tetris;
